@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchSeriesDetail, clearSelectedSeries } from '../store/seriesSlice';
+import { fetchSeriesDetail, clearSelectedSeries } from '../store/SeriesSlice';
 import { FaEye } from "react-icons/fa6";
 
 //firebase cagirma
