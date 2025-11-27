@@ -11,6 +11,7 @@ import { useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 import { logoutUser, setUser } from "./store/authSlice";
 import { Toaster } from "react-hot-toast";
+import UserSettings from "./pages/UserSettings";
 
 
 function App() {
@@ -69,6 +70,15 @@ function App() {
               <SeriesDetail />
             </PrivateRoutes>
           }/>
+          <Route
+            path="/user/:username"
+            element={
+              <PrivateRoutes>
+                <Header/>
+                <UserSettings/>
+              </PrivateRoutes>
+            }
+          />
       </Routes>
     </>
   )

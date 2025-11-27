@@ -147,9 +147,8 @@ export default function SeriesDetail() {
 
   return (
     <div className="bg-[#121212] min-h-screen text-white font-sans">
-
-      <div className="max-w-[900px] mx-auto my-10 px-4">
-        <button onClick={() => navigate(-1)} className="my-5 cursor-pointer bg-[#ff5252] hover:bg-red-600 text-white px-4 py-2 rounded-md transition-colors text-sm font-medium">
+      <div className="max-w-[900px] mx-auto mb-12 px-4">
+        <button onClick={() => navigate(-1)} className="my-5 cursor-pointer bg-[#ff5252] hover:bg-red-600 text-white px-5 py-3 rounded-md transition-colors text-sm font-medium">
           Geri
         </button>
         <div className="flex flex-col md:flex-row gap-8 mb-8">
