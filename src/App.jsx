@@ -12,23 +12,28 @@ import { useEffect, useState } from "react";
 import { logoutUser, setUser } from "./store/authSlice";
 import { Toaster } from "react-hot-toast";
 import UserSettings from "./pages/UserSettings";
-
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "./firebase";
+import AdminPage from "./pages/AdminPage";
 
 function App() {
   const dispatch = useDispatch();
-
   const [isAuthChecking, setIsAuthChecking] = useState(true);
 
-  
   useEffect(() => {
     //kullanıcı durumu değişikliği sorgulama
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if(user)
       {
+        //giriş yapmış kullanıcının rolünü soralım
+        const userRef = doc(db, 'users', user.uid);
+        const userSnap = await getDoc(userRef);
+        const userData = userSnap.exists() ? userSnap.data() : {};
         dispatch(setUser({
           uid: user.uid,
           email: user.email,
-          displayName: user.displayName
+          displayName: user.displayName,
+          role: userData.role || 'user'
         }));
       }
       else
@@ -56,6 +61,12 @@ function App() {
     <>
       <Toaster position="top-center"/>
       <Routes>
+        <Route path="/admin/:username" element={
+          <PrivateRoutes>
+            <Header />
+            <AdminPage />
+          </PrivateRoutes>
+        }/>
         <Route path="/login" element={<Login/>}/>
         <Route path="/register" element={<Register/>}/>
         <Route path="/" element={

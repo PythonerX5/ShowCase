@@ -64,6 +64,15 @@ function Header() {
                             >
                                 Hesap ayarları
                             </Link>
+                            {user?.role === 'admin' && (
+                                <Link
+                                    to='/admin/:username'
+                                    onClick={closeMenu}
+                                    className="w-full text-center py-2 hover:bg-[#333] hover:text-[#ff5252] transition-colors text-yellow-500 font-bold"
+                                >   
+                                    Admin Paneli
+                                </Link>
+                            )}
                             <button 
                                 onClick={handleLogout}
                                 className='bg-[#ff5252] cursor-pointer   hover:bg-red-600 text-white w-3/4 py-2 rounded-md flex justify-center items-center gap-2 font-bold transition-colors shadow-md'
