@@ -1,10 +1,10 @@
 import { FaSearch, FaUser } from "react-icons/fa";
 import { IoIosHeartEmpty, IoIosLogOut, IoMdClose } from "react-icons/io";
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { auth } from '../firebase';
 import { signOut } from 'firebase/auth';
 import { useSelector } from 'react-redux';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import UserSettings from "../pages/UserSettings";
 import { FaHeart } from "react-icons/fa6";
 
@@ -22,6 +22,19 @@ function Header() {
     const [searchTerm, setSearchTerm] = useState('');
 
     const [isFavOpen, setIsFavOpen] = useState(false);
+
+    const location = useLocation();
+
+    useEffect(() => {
+        if(location.pathname.includes('watchlist'))
+        {
+            setIsFavOpen(true);
+        }
+        else
+        {
+            setIsFavOpen(false)
+        }
+    }, [location])
 
     const handleSearch = (e) => {
         e.preventDefault();
