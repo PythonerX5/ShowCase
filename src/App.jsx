@@ -65,7 +65,7 @@ function App() {
         <Route path="/search/:query" element={
           <PrivateRoutes>
             <Header />
-            <SearchPage />
+            <SearchPage />  
           </PrivateRoutes>
         }/>
         <Route path="/admin/:username" element={

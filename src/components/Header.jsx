@@ -112,7 +112,7 @@ function Header() {
 
                         {user?.role === 'admin' && (
                             <Link
-                                to="/admin"
+                                to={`/admin/${urlUserName}`}
                                 onClick={closeMenu}
                                 className="w-full text-center py-2 hover:bg-[#333] hover:text-[#ff5252] transition-colors text-yellow-500 font-bold"
                             >   
