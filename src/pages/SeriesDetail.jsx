@@ -2,21 +2,38 @@ import { useEffect, useState } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchSeriesDetail, clearSelectedSeries } from '../store/SeriesSlice';
-import { FaEye } from "react-icons/fa6";
+import { FaEye, FaTrash } from "react-icons/fa6";
 
 //firebase cagirma
 import { db } from '../firebase';
-import { addDoc, collection, onSnapshot, query, where, orderBy, serverTimestamp } from 'firebase/firestore';
+import { addDoc, collection, onSnapshot, query, where, orderBy, serverTimestamp, deleteDoc, doc } from 'firebase/firestore';
 import toast from 'react-hot-toast';
 
 //yorum kutusu bilesenleri
-const ReviewItem = ({ review }) => {
+const ReviewItem = ({ review, currentUser, onDelete }) => {
   const [isRevealed, setIsRevealed] = useState(!review.is_spoiler);
 
+  const canDelete = currentUser && (currentUser.uid === review.userId || currentUser.role === 'admin')
+
   return (
-    <div className="border-b border-[#333] pb-4 last:border-none">
-      <div className="flex justify-between items-baseline mb-2">
-        <span className="font-bold text-lg text-gray-200">{review.username}</span>
+    <div className="border-b border-[#333] pb-4 last:border-none relative group">
+      
+      {/* yorum silme butonu */}
+      {canDelete && (
+        <button
+          onClick={() => onDelete(review.id)}
+          className="absolute top-0 right-0 cursor-pointer hover:bg-[#2a2a2a] rounded-full text-gray-500 hover:text-red-500 p-2 transition-all opacity-100 md:opacity-0 md:group-hover:opacity-100"
+          title="Yorumu Sil"
+        >
+          <FaTrash />
+        </button>
+      )}
+
+      <div className="flex justify-between items-baseline mb-2 pr-8">
+        <span className="font-bold text-lg text-gray-200">
+            {review.username}
+            {currentUser?.uid === review.userId && <span className="text-xs text-gray-500 ml-2">(Sen)</span>}
+          </span>
         <span className="text-[#ffb347] text-sm flex items-center gap-2">
           Puan: {review.rating}/10
           {review.is_spoiler && (
@@ -28,7 +45,6 @@ const ReviewItem = ({ review }) => {
       </div>
 
       <div className="relative">
-        
         <p className={`text-gray-300 whitespace-pre-wrap text-sm transition-all duration-300 ${
             !isRevealed ? 'blur-[6px] select-none opacity-50' : '' 
           }`}>
@@ -59,7 +75,7 @@ export default function SeriesDetail() {
   const initialData = location.state;
   const { selectedSeries } = useSelector((state) => state.series);
 
-  //reduxtan giris yapmis kullaniciyi alma(yorumdaki isim icin)
+  //reduxtan giris yapmis kullaniciyi al
   const { user } = useSelector((state) => state.auth);
   const displayData = selectedSeries || initialData;
 
@@ -96,6 +112,19 @@ export default function SeriesDetail() {
       return () => unsubscribe(); //sayfadan çıkınca dinlemeyi biraksin(performans icin)
     }
   }, [id]);
+
+  const handleDeleteComment = async (commentId) => {
+    if(window.confirm("Bu yorumu silmek istediğinize emin misiniz?")) {
+        try {
+            await deleteDoc(doc(db, "comments", commentId));
+            toast.success("Yorum silindi.");
+        } catch (error) {
+            console.error("Silme hatası:", error);
+            toast.error("Yorum silinemedi: " + error.message);
+        }
+    }
+  };
+
 
   //Yorum Gönderme işlemleri
   const handleSubmit = async (e) => {
@@ -182,15 +211,21 @@ export default function SeriesDetail() {
           </div>
         </div>
 
-        <h3 className="text-2xl font-bold border-b border-[#333] pb-2 mb-4">Yorumlar</h3>
-
+        <h3 className="text-2xl font-bold border-b border-[#333] pb-2 mb-4">
+          Yorumlar({reviews?.length})
+        </h3>
         <div className="space-y-4">
            {reviews.length > 0 ? (
              reviews.map((r) => (
-               <ReviewItem key={r.id} review={r} />
+               <ReviewItem 
+                    key={r.id} 
+                    review={r} 
+                    currentUser={user}
+                    onDelete={handleDeleteComment}
+                />
              ))
            ) : (
-             <p className="text-gray-500">Henüz yorum yok.</p>
+             <p className="text-gray-500 italic">Henüz yorum yapılmamış. İlk yorumu sen yap! 🚀</p>
            )}
         </div>
 

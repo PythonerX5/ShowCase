@@ -85,7 +85,7 @@ const seriesSlice = createSlice({
           state.searchResults = [];
         }
       })
-      .addCase(searchSeries.rejected, (state, action) => {
+      .addCase(searchSeries.rejected, (state) => {
         state.status = 'failed';
       })
   },
