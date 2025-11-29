@@ -1,11 +1,12 @@
 import { FaSearch, FaUser } from "react-icons/fa";
-import { IoIosLogOut, IoMdClose } from "react-icons/io";
+import { IoIosHeartEmpty, IoIosLogOut, IoMdClose } from "react-icons/io";
 import { Link, useNavigate } from 'react-router-dom';
 import { auth } from '../firebase';
 import { signOut } from 'firebase/auth';
 import { useSelector } from 'react-redux';
 import { useState } from "react";
 import UserSettings from "../pages/UserSettings";
+import { FaHeart } from "react-icons/fa6";
 
 function Header() {
     // Redux'tan güncel kullanıcıyı al
@@ -19,6 +20,9 @@ function Header() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     const [searchTerm, setSearchTerm] = useState('');
+
+    const [isFavOpen, setIsFavOpen] = useState(false);
+    console.log(isFavOpen);
 
     const handleSearch = (e) => {
         e.preventDefault();
@@ -39,6 +43,19 @@ function Header() {
         }
         catch(error){
             console.error("Çıkış yapılırken hata oluştu ", error)
+        }
+    }
+
+    const handleToggleWatchList = () => {
+        if(isFavOpen)
+        {
+            setIsFavOpen(false);
+            navigate('/');
+        }
+        else
+        {
+            setIsFavOpen(true);
+            navigate(`/${urlUserName}/watchlist`)
         }
     }
 
@@ -64,8 +81,19 @@ function Header() {
                 className="w-full bg-[#2a2a2a] border border-gray-700 rounded-full py-2 pl-10 pr-4 text-sm text-white focus:outline-none focus:border-[#ff5252] transition-all"
             />
         </form>
+        <div className='flex gap-4 items-center text-white flex-shrink-0'>
 
-        <div className='flex items-center text-white flex-shrink-0'>
+            {/* watchlist buttonu */}
+            {user && (
+                <button
+                    className="cursor-pointer p-2 hover:bg-[#333] rounded-full transition-colors"
+                    onClick={handleToggleWatchList}
+                >
+                    {isFavOpen ? <FaHeart className="text-2xl"/> : <IoIosHeartEmpty  className="text-2xl"/>}
+                </button>
+
+            )}
+
             <button 
                 className='cursor-pointer p-2 hover:bg-[#333] rounded-full transition-colors'
                 onClick={() => setIsMenuOpen(!isMenuOpen)}    

@@ -134,7 +134,7 @@ function UserSettings() {
         {!isEditing ? (
             <div className='flex flex-col items-center animate-in fade-in duration-300'>
                 {/* avatar görünümü */}
-                <div className='w-28 h-28 rounded-full from-[#ff5252] to-orange-500 flex items-center justify-center text-5xl font-bold text-white shadow-lg mb-6 border-4 border-[#1f1f1f]'>
+                <div className='w-28 h-28 rounded-full bg-amber-600 from-[#ff5252] to-orange-500 flex items-center justify-center text-5xl font-bold text-white shadow-lg mb-6 border-4 border-[#1f1f1f]'>
                     {/* Kullanıcı varsa kullanıcı adının 0. indexini yani bas harfini al avatarın ortasına yok yoksa x yazdır */}
                     {user.displayName ? user.displayName.charAt(0).toUpperCase() : "X"}
                 </div>

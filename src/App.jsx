@@ -16,6 +16,7 @@ import { doc, getDoc } from "firebase/firestore";
 import { db } from "./firebase";
 import AdminPage from "./pages/AdminPage";
 import SearchPage from "./pages/SearchPage";
+import WatchList from "./pages/WatchList";
 
 function App() {
   const dispatch = useDispatch();
@@ -66,6 +67,12 @@ function App() {
           <PrivateRoutes>
             <Header />
             <SearchPage />  
+          </PrivateRoutes>
+        }/>
+        <Route path="/:username/watchlist" element={
+          <PrivateRoutes>
+            <Header/>
+            <WatchList/>
           </PrivateRoutes>
         }/>
         <Route path="/admin/:username" element={

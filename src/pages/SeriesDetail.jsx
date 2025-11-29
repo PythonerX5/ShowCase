@@ -22,14 +22,14 @@ const ReviewItem = ({ review, currentUser, onDelete }) => {
       {canDelete && (
         <button
           onClick={() => onDelete(review.id)}
-          className="absolute top-0 right-0 cursor-pointer hover:bg-[#2a2a2a] rounded-full text-gray-500 hover:text-red-500 p-2 transition-all opacity-100 md:opacity-0 md:group-hover:opacity-100"
+          className="absolute duration-200 top-0 right-0 cursor-pointer hover:bg-[#2a2a2a] rounded-full text-gray-500 hover:text-red-500 p-2 transition-all opacity-100 md:opacity-0 md:group-hover:opacity-100"
           title="Yorumu Sil"
         >
           <FaTrash />
         </button>
       )}
 
-      <div className="flex justify-between items-baseline mb-2 pr-8">
+      <div className="flex justify-between items-baseline mb-2 mx-4 pr-8">
         <span className="font-bold text-lg text-gray-200">
             {review.username}
             {currentUser?.uid === review.userId && <span className="text-xs text-gray-500 ml-2">(Sen)</span>}
@@ -55,7 +55,7 @@ const ReviewItem = ({ review, currentUser, onDelete }) => {
           <div className="absolute inset-0 flex items-center justify-center z-10">
             <button 
               onClick={() => setIsRevealed(true)}
-              className="bg-[#ff5252] hover:bg-red-600 text-white px-4 py-2 rounded-lg font-bold shadow-lg transition-transform transform hover:scale-105 flex items-center gap-2"
+              className="bg-[#ff5252] cursor-pointer hover:bg-red-600 text-white px-4 py-2 rounded-lg font-bold shadow-lg transition-transform transform hover:scale-105 flex items-center gap-2"
             >
               <FaEye /> Spoiler'ı Göster
             </button>
