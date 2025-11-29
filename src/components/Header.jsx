@@ -22,7 +22,6 @@ function Header() {
     const [searchTerm, setSearchTerm] = useState('');
 
     const [isFavOpen, setIsFavOpen] = useState(false);
-    console.log(isFavOpen);
 
     const handleSearch = (e) => {
         e.preventDefault();
