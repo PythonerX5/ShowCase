@@ -15,6 +15,7 @@ import UserSettings from "./pages/UserSettings";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "./firebase";
 import AdminPage from "./pages/AdminPage";
+import SearchPage from "./pages/SearchPage";
 
 function App() {
   const dispatch = useDispatch();
@@ -61,6 +62,12 @@ function App() {
     <>
       <Toaster position="top-center"/>
       <Routes>
+        <Route path="/search/:query" element={
+          <PrivateRoutes>
+            <Header />
+            <SearchPage />
+          </PrivateRoutes>
+        }/>
         <Route path="/admin/:username" element={
           <PrivateRoutes>
             <Header />

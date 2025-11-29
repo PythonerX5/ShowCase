@@ -14,9 +14,7 @@ export const fetchMultipleSeries = createAsyncThunk('series/fetchMultiple', asyn
   const promises = titles.map(async (title) => {
     const response = await fetch(`https://www.omdbapi.com/?t=${title}&type=series&apikey=${API_KEY}`);
     const data = await response.json();
-    
-    console.log(`OMDb Cevabı (${title}):`, data);
-    
+    //console.log(`OMDb Cevabı (${title}):`, data);
     return data;
   });
 
@@ -24,10 +22,18 @@ export const fetchMultipleSeries = createAsyncThunk('series/fetchMultiple', asyn
   return results.filter(item => item.Response === "True");
 });
 
+
+export const searchSeries = createAsyncThunk('series/search', async (searchTerm) => {
+  const response = await fetch(`https://www.omdbapi.com/?s=${searchTerm}&type=series&apikey=${API_KEY}`);
+  return await response.json();
+});
+
+
 const seriesSlice = createSlice({
   name: 'series',
   initialState: {
-    seriesList: [],
+    seriesList: [], //Ana sayfada gözükenlerin listesi
+    searchResults: [], //aramada gözükecekler
     selectedSeries: null,
     status: 'idle',
     error: null
@@ -35,6 +41,9 @@ const seriesSlice = createSlice({
   reducers: {
     clearSelectedSeries: (state) => {
         state.selectedSeries = null;
+    },
+    clearSearchResults: (state) => {
+      state.searchResults = [];
     }
   },
   extraReducers: (builder) => {
@@ -61,9 +70,26 @@ const seriesSlice = createSlice({
       .addCase(fetchSeriesDetail.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.error.message;
-      });
+      })
+      .addCase(searchSeries.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(searchSeries.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        if(action.payload.Response === 'True')
+        {
+          state.searchResults = action.payload.Search;
+        }
+        else
+        {
+          state.searchResults = [];
+        }
+      })
+      .addCase(searchSeries.rejected, (state, action) => {
+        state.status = 'failed';
+      })
   },
 });
 
-export const { clearSelectedSeries } = seriesSlice.actions;
+export const { clearSelectedSeries, clearSearchResults} = seriesSlice.actions;
 export default seriesSlice.reducer;
