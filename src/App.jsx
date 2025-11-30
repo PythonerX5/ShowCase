@@ -17,6 +17,7 @@ import { db } from "./firebase";
 import AdminPage from "./pages/AdminPage";
 import SearchPage from "./pages/SearchPage";
 import WatchList from "./pages/WatchList";
+import NotFound from "./pages/NotFound";
 
 function App() {
   const dispatch = useDispatch();
@@ -104,6 +105,7 @@ function App() {
               </PrivateRoutes>
             }
           />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </>
   )

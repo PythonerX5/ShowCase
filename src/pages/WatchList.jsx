@@ -26,7 +26,7 @@ export default function Watchlist() {
   }, [user]);
 
   return (
-    <div className="bg-[#121212] min-h-screen p-8 text-white">
+    <div className="bg-[#121212] min-h-screen p-4 text-white">
       <h1 className="text-3xl font-bold mb-8 text-center flex items-center justify-center gap-3">
          İzleme Listem  <span className="text-lg bg-[#2a2a2a] px-3 py-1 rounded-full text-gray-400">{favorites.length}</span>
       </h1>
@@ -40,7 +40,7 @@ export default function Watchlist() {
             <p className="text-sm">Beğendiğiniz dizilerin sağ üstündeki kalp butonuna basarak ekleyebilirsiniz.</p>
         </div>
       )}
-      <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-10 gap-3 md:gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-10 gap-3 md:gap-4">
         {favorites.map((item) => (
           <SeriesCard 
             key={item.id}
@@ -48,7 +48,6 @@ export default function Watchlist() {
               id: item.id,
               title: item.title,
               image: item.image,
-              description: "" 
             }}
           />
         ))}

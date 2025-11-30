@@ -47,6 +47,7 @@ function SeriesCard({ data }) {
             id: data.id,
             title: data.title,
             image: data.image || "N/A",
+            description: data.description || data.Plot || "Açıklama yok",
             addedAt: serverTimestamp()
           });
           toast.success(`${data.title} Listeye Eklendi`);
@@ -77,8 +78,8 @@ function SeriesCard({ data }) {
       />
       <div>
         <h3 className='text-white font-bold p-3 text-sm truncate flex justify-center'>{data.title}</h3>
-        <p className='line-clamp-5 h-12 px-3 '>
-            {data.description}
+        <p className="text-xs text-gray-400 line-clamp-2 min-h-[2.5em]">
+          {data.description || data.Plot || "Detaylar için tıklayın..."}
         </p>
         <button 
             className='w-20 bg-[#ff5252] flex items-center justify-center my-6 mx-4 p-2 rounded-[10px] cursor-pointer '
